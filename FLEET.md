@@ -1,9 +1,10 @@
 # Fleet inventory
 
-Last verified: 2026-10-25 02:25 Beijing time. All 5 machines Paused
-(idle >30 min, confirmed 02:15; test-2 resumed 3× for A3 and left
-Paused at 02:25), count 5/5, all 4 vCPU / 8 GiB / 20 GiB.
-Snapshot storage observed 1.5 GiB / 200 GiB at 02:15.
+Last verified: 2026-10-25 04:35 Beijing time. All 5 machines Paused
+(A1 round: test-5 deleted at 04:16 and rebuilt from snapshot at
+04:32, verified Running 04:33, paused 04:33; test-3 resumed 04:33
+for D3 plant, paused 04:35 with marker process PID 5125 inside).
+Snapshot storage observed 1.5 GiB / 200 GiB at 04:15 (unchanged).
 
 ## Account
 
@@ -17,11 +18,11 @@ Snapshot storage observed 1.5 GiB / 200 GiB at 02:15.
 
 | Machine | Source | Created (Beijing) | Run started | Status at last check |
 | --- | --- | --- | --- | --- |
-| test-1 | standard | 2026-10-24 23:20:34 | 23:20:49 | Running |
-| test-2 | base-2026-10-24 | 2026-10-25 00:00:42 | — | Running |
-| test-3 | base-2026-10-24 | 2026-10-25 00:02:15 | — | Running |
-| test-4 | base-2026-10-24 | 2026-10-25 00:03:52 | — | Running |
-| test-5 | base-2026-10-24 | 2026-10-25 00:05:29 | — | Running |
+| test-1 | standard | 2026-10-24 23:20:34 | 23:20:49 | Paused (04:35 check) |
+| test-2 | base-2026-10-24 | 2026-10-25 00:00:42 | — | Paused (04:35 check) |
+| test-3 | base-2026-10-24 | 2026-10-25 00:02:15 | — | Paused 04:35, D3 planted (marker PID 5125, harvest 2026-10-26 04:00 / 2026-10-27 04:00) |
+| test-4 | base-2026-10-24 | 2026-10-25 00:03:52 | — | Paused (04:35 check) |
+| test-5 | base-2026-10-24 | 2026-10-25 04:32:50 | — | Paused at 04:33 (rebuilt this round, id m_agqw7hn5d3p3sl4cbll4o2rf5e) |
 
 Run-started times for the clones were not all recorded in the sync
 run; the important verified fact is that each clone reached Running
