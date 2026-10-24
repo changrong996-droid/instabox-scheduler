@@ -1,7 +1,9 @@
 # Fleet inventory
 
-Last verified: 2026-10-25 00:06 Beijing time. All 5 machines Running,
-count 5/5, all 4 vCPU / 8 GiB / 20 GiB.
+Last verified: 2026-10-25 02:25 Beijing time. All 5 machines Paused
+(idle >30 min, confirmed 02:15; test-2 resumed 3× for A3 and left
+Paused at 02:25), count 5/5, all 4 vCPU / 8 GiB / 20 GiB.
+Snapshot storage observed 1.5 GiB / 200 GiB at 02:15.
 
 ## Account
 
@@ -63,7 +65,8 @@ deleted; that matches the 30-minute rule.
   snapshot, which was saved before the smoke test).
 - test-2: video pilot machine. Chinese render test files in
   `/data/workspace/video-test-2026-10-25/`. No new snapshot saved
-  for it yet.
+  for it yet. A3 marker log `/data/workspace/a3-marker.log`
+  (700 B, kept); marker process killed after the test.
 - test-3, test-4, test-5: base clones, version checks only.
   No video smoke test repeated on them yet, and whether the
   smoke-test files are inherited from the snapshot was not checked.
