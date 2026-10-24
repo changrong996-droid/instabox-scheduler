@@ -1,16 +1,18 @@
 # Fleet inventory
 
-Last verified: 2026-10-25 04:35 Beijing time. All 5 machines Paused
-(A1 round: test-5 deleted at 04:16 and rebuilt from snapshot at
-04:32, verified Running 04:33, paused 04:33; test-3 resumed 04:33
-for D3 plant, paused 04:35 with marker process PID 5125 inside).
-Snapshot storage observed 1.5 GiB / 200 GiB at 04:15 (unchanged).
+Last verified: 2026-10-25 06:17 Beijing time. All 5 machines Paused
+(A4 round: test-1 resumed 06:16, snapshot a4-test1-20261025 saved
+06:16:50, paused 06:17; test-3 D3 plant untouched, still Paused).
+Snapshot count now 2/5. Storage observed 1.4 GiB / 200 GiB at 06:15
+(was 1.5 GiB at 04:15; 0.1 GiB difference unexplained, likely
+rounding/display, not a policy change).
 
 ## Account
 
 - Plan: Free, Personal org. Never billed.
 - Machines: 5 total, in any state. Paused and stopped count.
-- Snapshots: 1 of 5 used (`base-2026-10-24`).
+- Snapshots: 2 of 5 used (`base-2026-10-24`, `a4-test1-20261025`
+  saved 2026-10-25 06:16:50 from test-1).
 - Limits: idle 30 minutes pauses; max runtime 8 hours pauses;
   3 starts per minute.
 
@@ -18,7 +20,7 @@ Snapshot storage observed 1.5 GiB / 200 GiB at 04:15 (unchanged).
 
 | Machine | Source | Created (Beijing) | Run started | Status at last check |
 | --- | --- | --- | --- | --- |
-| test-1 | standard | 2026-10-24 23:20:34 | 23:20:49 | Paused (04:35 check) |
+| test-1 | standard | 2026-10-24 23:20:34 | 23:20:49 | Paused (06:17 check; A4 snapshot a4-test1-20261025 saved 06:16:50) |
 | test-2 | base-2026-10-24 | 2026-10-25 00:00:42 | — | Paused (04:35 check) |
 | test-3 | base-2026-10-24 | 2026-10-25 00:02:15 | — | Paused 04:35, D3 planted (marker PID 5125, harvest 2026-10-26 04:00 / 2026-10-27 04:00) |
 | test-4 | base-2026-10-24 | 2026-10-25 00:03:52 | — | Paused (04:35 check) |
@@ -42,7 +44,9 @@ deleted; that matches the 30-minute rule.
 - Contents: Debian 13 (trixie), kernel 6.18.54-instabox, user `user`,
   home is `/data/home`, workspace is `/data/workspace` (empty at
   snapshot time, except the base venv below).
-- Installed in the base layer: ffmpeg 7.7.1, python3-pip 25.1.1,
+- Installed in the base layer: ffmpeg 7.1.5 (Debian trixie package
+  7.1.5-0+deb13u1; corrected 2026-10-25, E-20261025-006 — earlier
+  records saying 7.7.1 were a transcription error), python3-pip 25.1.1,
   python3-venv, rsync 3.5.0, tmux 3.5a, Pillow 13.0.0 and numpy 2.5.4
   in `/data/workspace/venv-base`.
 - Already present, not reinstalled: node 22.23.3, npm 10.9.9,
