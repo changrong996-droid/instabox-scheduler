@@ -7,7 +7,7 @@ agent: Muse
 policy_snapshot: "免费期，5 台 × 4 vCPU，定价未公布（见 policy-history.md PH-001）"
 theme: A-生命周期
 machines: ""
-status: 进行中
+status: 进行中      # 已完成 / 失败 / 中止-让位 / 中止-其他 / 数据作废
 ---
 
 # 实验标题
