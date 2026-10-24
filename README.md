@@ -1,73 +1,64 @@
 # instabox-scheduler
 
-Scheduling layer for a small fleet of InstaBox cloud computers.
+本仓库是 **ACCT-A** 的实验仓库。ACCT-A 由 Muse（Muse_cr）独占
+使用，账号为免费计划，5 台机器，test-1 至 test-5。
 
-The machines themselves are not the valuable part. The valuable part is
-the set of rules that lets one agent — and later, several agents — use,
-share, and hand back those machines without stepping on each other.
+ACCT-B 由 tibo-cs 独占使用，各建各的仓库。两账号资源池完全
+隔离，互不干扰；本仓库只记录 ACCT-A 的实验，以及已知的配对
+复制协调信息。
 
-This repo is the shared notebook for that layer. It is written for cloud
-agents first, humans second. Every claim in it should be traceable to a
-dated test run in `experiments/`, not to a guess.
+## 协议
 
-## Fleet, as of 2026-10-25 00:06 Beijing time
+根本规范见 [PROTOCOL.md](PROTOCOL.md)，版本 1.1，日期 2026-10-24。
+任何对协议的修改必须经人类负责人批准后生效。
 
-- Account: Personal, Free plan, 5 machines total, 0 paid workspaces.
-- Machines: test-1 to test-5, all Running at last check, all 4 vCPU /
-  8 GiB / 20 GiB, Debian 13 (trixie).
-- Base snapshot: `base-2026-10-24`, saved 2026-10-24 23:52:40, 1 of 5
-  snapshots used.
-- Common layer on every machine: ffmpeg 7.7.1, python3-pip 25.1.1,
-  python3-venv, rsync 3.5.0, tmux 3.5a, Pillow 13.0.0, numpy 2.5.4 in
-  `/data/workspace/venv-base`, plus node 22.23.3, git 2.47.3, gh 2.102.0,
-  claude 2.1.288, codex 0.160.0, Chromium 154.
-- Chinese fonts (fonts-noto-cjk) were already in the base image; Pillow
-  rendering of Chinese text and a 2-second 720p H.264 clip were verified
-  on test-1 and test-2.
+协议摘要：
 
-See `FLEET.md` for the full inventory and `SCHEDULER.md` for the rules.
+- 每个智能体绑定并独占一个账号，一智能体一账号，凭证严格
+  不交叉，不得借用、代操作或触碰另一账号。
+- 实验登记表 CLAIMS.md 的职责是防工作重复 + 配对复制登记。
+- 分工：ACCT-A → 主题 A（生命周期）、D（可靠性）、F/G
+  （调度与跨账号观测）；ACCT-B → 主题 B（性能边界）、
+  C（网络）、E（兼容性）。配对复制实验不受分工限制。
+- 每晚一个主题，不贪多。同一实验重复 3 晚以上、结论稳定
+  后才可写入 scheduler-spec.md 为"已验证"。
+- 实验记录只增不改；结论必须引用实验编号；性能指标必须
+  给分布（p50/p95/max），禁止只报平均值。
+- 红线：凭证严禁入仓；创建 / 销毁循环温和，间隔 ≥30 秒；
+  遇到拒绝 / 429 立即停止并记录，不得重试冲击；实验仅
+  针对自己账号内的机器。
 
-## Hard limits (verified, not assumed)
+## 快速上手
 
-- 5 machines total, in any state. Paused and stopped machines count.
-  Delete one to free a slot; pausing does not.
-- Free plan: never billed. Idle 30 minutes pauses a machine; max
-  runtime 8 hours, then it pauses. Pause is not delete and not a charge.
-- Start rate limit: 3 starts per minute on the Free plan. The 4th
-  start in a minute is refused; wait a minute and retry.
-- Snapshots: the dashboard shows a limit of 5 for this account, not the
-  10 in the public limits doc. A snapshot saves installed software and
-  files, including home, workspace and credentials; running processes
-  and unwritten data are not saved.
-- Storage per machine is fixed on the Free plan: 20 GiB total, system
-  takes 16 GiB in the settings view.
+1. 通读 PROTOCOL.md。
+2. 确认自己的账号标签是 ACCT-A，并确认只持有该账号的凭证。
+3. 复制 templates/experiment-template.md 备用。
+4. 在 CLAIMS.md 登记你的第一个实验。
 
-## How to use this repo (agents)
+## 仓库结构
 
-1. Read `SCHEDULER.md` before touching a machine.
-2. Claim a machine in `leases.md` before you use it; release it when
-   you are done. Never assume a machine is free because it is Running.
-3. Do every test through the heartbeat checklist in `heartbeat/`.
-4. Write the result into `experiments/` the same run, with date, machine,
-   command, result, and what changed. A test with no log did not happen.
-5. Never put a secret, token, password, API key, invite code, email
-   address, or machine identifier in this repo. Secrets are injected at
-   boot or passed per task, never committed.
+- PROTOCOL.md — 根本规范
+- CLAIMS.md — 实验登记表
+- policy-history.md — 政策 / 额度 / 定价变化记录
+- findings.md — 结论汇总（只允许引用实验编号）
+- scheduler-spec.md — 调度器规格（草案）
+- incidents.md — 异常事件日志
+- FLEET.md — ACCT-A 机器清单（截至 2026-10-25 00:06）
+- experiments/ — 原始实验记录（只增不改）
+- templates/experiment-template.md — 实验记录模板
 
-## Heartbeat
+## 最近动态
 
-A heartbeat run, about once an hour overnight, checks the fleet status,
-resumes a paused machine only if a test needs it, runs one combination
-test from the matrix in `SCHEDULER.md`, and logs the result here. It does
-not create machines, does not pay, does not upgrade, and does not delete
-anything unless a test explicitly says so and the owner approved it.
-
-See `heartbeat/README.md`.
-
-## Status
-
-- 2026-10-24: fleet built, base layer installed and snapshotted,
-  5 machines verified Running at the same time.
-- 2026-10-25 00:06: base layer synced to all 5 machines by snapshot
-  clone, each verified in its terminal.
-- Next: second-layer roles, and the first real parallel job.
+- 2026-10-25 00:34：仓库按协议 v1.1 重构完成。旧的
+  SCHEDULER.md / leases.md / heartbeat 说明已由
+  PROTOCOL.md、scheduler-spec.md、CLAIMS.md 替代；
+  已有实验按协议命名与模板迁移，内容未改，只补了
+  frontmatter。
+- 2026-10-25 00:06：E-20261025-001 快照克隆同步完成，
+  5/5 Running，克隆机逐台验证通过。
+- 2026-10-25 00:16：E-20261025-002 中文视频渲染完成，
+  字体已在基础层镜像中，无需另装。
+- 下一个实验：E-20261025-003，A3 暂停恢复，已在
+  CLAIMS.md 登记为进行中。按协议第 7 节夜间流程执行。
+- 需人类裁决的事项：无。
+- 需人类关注：无。
