@@ -1,11 +1,11 @@
 # Fleet inventory
 
-Last verified: 2026-10-25 06:17 Beijing time. All 5 machines Paused
-(A4 round: test-1 resumed 06:16, snapshot a4-test1-20261025 saved
-06:16:50, paused 06:17; test-3 D3 plant untouched, still Paused).
-Snapshot count now 2/5. Storage observed 1.4 GiB / 200 GiB at 06:15
-(was 1.5 GiB at 04:15; 0.1 GiB difference unexplained, likely
-rounding/display, not a policy change).
+Last verified: 2026-10-25 14:18 Beijing time. All 5 machines Paused
+(D2 14:15 round: test-1 resumed 14:16, terminal check 14:17,
+paused 14:18; test-3 D3 plant untouched, still Paused).
+Snapshot count still 2/5. Storage observed 1.4 GiB / 200 GiB at 14:15
+(per-machine: test-1 0.5, test-2 0.3, test-3 0.2, test-4 0.2,
+test-5 0.2 GiB; first per-machine breakdown recorded).
 
 ## Account
 
